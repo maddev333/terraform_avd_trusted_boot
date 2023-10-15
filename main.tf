@@ -81,12 +81,12 @@ resource "azurerm_virtual_machine_extension" "example" {
 SETTINGS  
 }  
 
-resource "null_resource" "azcli" {
+resource "null_resource" "azcli1" {
    
    provisioner "local-exec" {
     
     interpreter = ["/bin/bash", "-c"]
-    command = "az vm run-command invoke --command-id RunPowerShellScript --vm-name ${azurerm_windows_virtual_machine.example.name} --resource-group ${azurerm_resource_group.example.name} --scripts @getprocess.ps1"
+    command = "az vm run-command invoke --command-id RunPowerShellScript --name ${azurerm_windows_virtual_machine.example.name} --resource-group ${azurerm_resource_group.example.name} --scripts @getprocess.ps1"
   
   }
 }
