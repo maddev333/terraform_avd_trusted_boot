@@ -86,7 +86,22 @@ resource "null_resource" "azcli1" {
    provisioner "local-exec" {
     
     interpreter = ["/bin/bash", "-c"]
-    command = "az vm run-command invoke --command-id RunPowerShellScript --name ${azurerm_windows_virtual_machine.example.name} --resource-group ${azurerm_resource_group.example.name} --scripts @getprocess.ps1"
+    command = "az vm run-command invoke --command-id RunPowerShellScript --name ${format("%s",azurerm_windows_virtual_machine.example.name)} --resource-group ${azurerm_resource_group.example.name} --scripts @getprocess.ps1"
+  
+  }
+}
+
+variable "sub" {
+  type        = string
+  default     = "8e09ea39-a872-4c44-91e8-b80ddcafcd7c"
+}
+
+resource "null_resource" "azrest" {
+   
+   provisioner "local-exec" {
+    
+    interpreter = ["/bin/bash", "-c"]
+    command = "az rest --method post --uri https://management.azure.com/subscriptions/${var.sub}/resourcegroups/${azurerm_resource_group.example.name}/providers/Microsoft.Compute/virtualMachines/${azurerm_windows_virtual_machine.example.name}/powerOff?api-version=2021-04-01"
   
   }
 }
